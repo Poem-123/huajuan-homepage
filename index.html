@@ -3,35 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="花卷的自我介绍网页，包含简介、技能、项目和联系方式。">
-  <title>花卷的自我介绍</title>
+  <meta name="description" content="花卷的轻极简作品集主页，记录一只猫的日常观察、作品与生活方式。">
+  <title>花卷 | 轻柔日常作品集</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
   <style>
     :root {
-      --primary-color: #117f7a;
-      --primary-dark: #075f5c;
-      --accent-color: #e56b4f;
-      --gold-color: #f4bd4f;
-      --ink-color: #18232d;
-      --text-color: #26323d;
-      --muted-color: #65717d;
-      --background-color: #f5f8f6;
-      --surface-color: #ffffff;
-      --line-color: #d7e4df;
-      --shadow: 0 18px 42px rgba(18, 47, 43, 0.12);
-    }
-
-    [data-theme="dark"] {
-      --primary-color: #32d1ca;
-      --primary-dark: #8ff0eb;
-      --accent-color: #ff977d;
-      --gold-color: #f6c85d;
-      --ink-color: #f3fbfa;
-      --text-color: #d9e8e6;
-      --muted-color: #9db1ae;
-      --background-color: #101918;
-      --surface-color: #172321;
-      --line-color: #28413d;
-      --shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
+      --pico-font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      --pico-primary: #0f766e;
+      --pico-primary-hover: #0d5f59;
+      --pico-primary-focus: rgba(15, 118, 110, 0.18);
+      --page-bg: #f7faf8;
+      --ink: #17211f;
+      --muted: #65736f;
+      --line: #dbe7e3;
+      --surface: rgba(255, 255, 255, 0.82);
+      --surface-strong: #ffffff;
+      --accent: #e56b4f;
+      --gold: #f2bd54;
+      --shadow: 0 24px 70px rgba(22, 54, 49, 0.12);
+      --radius: 8px;
     }
 
     * {
@@ -43,415 +33,285 @@
     }
 
     body {
-      margin: 0;
-      font-family: Arial, "Microsoft YaHei", sans-serif;
-      line-height: 1.6;
-      color: var(--text-color);
+      color: var(--ink);
       background:
-        linear-gradient(135deg, rgba(17, 127, 122, 0.12), transparent 34%),
-        linear-gradient(315deg, rgba(229, 107, 79, 0.13), transparent 30%),
-        var(--background-color);
-      transition: background 0.25s ease, color 0.25s ease;
+        radial-gradient(circle at 12% 8%, rgba(15, 118, 110, 0.12), transparent 28rem),
+        radial-gradient(circle at 86% 20%, rgba(229, 107, 79, 0.12), transparent 24rem),
+        linear-gradient(180deg, #fbfdfc 0, var(--page-bg) 42rem);
     }
 
-    [data-theme="dark"] body {
-      background:
-        linear-gradient(135deg, rgba(50, 209, 202, 0.12), transparent 34%),
-        linear-gradient(315deg, rgba(255, 151, 125, 0.12), transparent 30%),
-        var(--background-color);
+    body > header,
+    body > main,
+    body > footer {
+      width: min(1160px, calc(100% - 40px));
+      margin-inline: auto;
     }
 
-    a {
-      color: var(--primary-dark);
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    .site-header,
-    main,
-    .site-footer {
-      width: min(1160px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    section {
-      padding: 64px 0;
-      border-bottom: 1px solid var(--line-color);
-    }
-
-    .site-header {
+    body > header {
       position: sticky;
       top: 0;
-      z-index: 10;
-      width: 100%;
-      padding: 14px max(16px, calc((100% - 1160px) / 2));
-      background: rgba(245, 248, 246, 0.9);
-      border-bottom: 1px solid rgba(215, 228, 223, 0.78);
-      backdrop-filter: blur(12px);
+      z-index: 20;
+      padding: 14px 0;
+      background: rgba(247, 250, 248, 0.82);
+      border-bottom: 1px solid rgba(219, 231, 227, 0.9);
+      backdrop-filter: blur(18px);
     }
 
-    [data-theme="dark"] .site-header {
-      background: rgba(16, 25, 24, 0.9);
-      border-bottom-color: rgba(40, 65, 61, 0.86);
+    nav {
+      gap: 20px;
     }
 
-    .site-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      min-width: 0;
+    nav ul {
+      gap: 8px;
     }
 
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      min-width: 0;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .nav-actions::-webkit-scrollbar {
-      display: none;
-    }
-
-    .nav-list {
-      display: flex;
-      flex: 0 0 auto;
-      gap: 10px;
-      padding: 0;
-      margin: 0;
-      list-style: none;
-    }
-
-    .nav-list a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 36px;
-      padding: 0 12px;
+    nav a {
       border-radius: 999px;
-      color: var(--text-color);
+      color: var(--ink);
+      font-size: 0.95rem;
       text-decoration: none;
       white-space: nowrap;
     }
 
-    .nav-list a:hover {
-      background: rgba(17, 127, 122, 0.1);
-      color: var(--primary-dark);
-    }
-
-    .brand,
-    h1,
-    h2 {
-      color: var(--primary-dark);
+    nav a:hover {
+      color: var(--pico-primary);
+      background: rgba(15, 118, 110, 0.08);
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      font-size: 1.05rem;
       font-weight: 800;
-      font-size: 1.08rem;
-      text-decoration: none;
+      letter-spacing: 0;
     }
 
-    .brand::before {
-      content: "";
-      width: 12px;
-      height: 12px;
+    .brand-mark {
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      background: var(--accent-color);
-      box-shadow: 16px 0 0 var(--gold-color);
+      background:
+        radial-gradient(circle at 65% 35%, var(--gold) 0 18%, transparent 20%),
+        linear-gradient(135deg, var(--pico-primary), #6fc9c4);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.58);
     }
 
-    .icon-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 42px;
-      min-height: 42px;
-      padding: 0 12px;
-      border: 1px solid var(--line-color);
-      border-radius: 999px;
-      color: var(--primary-dark);
-      background: var(--surface-color);
-      cursor: pointer;
-      font: inherit;
-      font-weight: 700;
-      box-shadow: 0 8px 18px rgba(18, 47, 43, 0.08);
+    .nav-links {
+      overflow-x: auto;
+      scrollbar-width: none;
     }
 
-    .icon-button:hover {
-      border-color: var(--primary-color);
-      transform: translateY(-1px);
+    .nav-links::-webkit-scrollbar {
+      display: none;
     }
 
-    .intro-content {
+    section {
+      padding: clamp(72px, 10vw, 116px) 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero {
+      min-height: calc(100vh - 72px);
       display: grid;
-      grid-template-columns: minmax(280px, 0.85fr) minmax(320px, 1.15fr);
-      gap: 48px;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      gap: clamp(36px, 7vw, 80px);
       align-items: center;
-      min-height: calc(100vh - 80px);
-      padding: 32px 0 56px;
-    }
-
-    .avatar {
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      border-radius: 28px;
-      object-fit: cover;
-      background: #d4f2f0;
-      border: 10px solid var(--surface-color);
-      box-shadow: var(--shadow);
+      padding-top: clamp(44px, 8vw, 96px);
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin: 0 0 12px;
-      color: var(--accent-color);
-      font-size: 0.92rem;
-      font-weight: 700;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
     }
 
-    h1 {
-      max-width: 680px;
-      margin: 0;
-      font-size: clamp(2.25rem, 6vw, 5rem);
-      line-height: 1.04;
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: var(--ink);
       letter-spacing: 0;
     }
 
-    h2 {
-      margin: 0 0 22px;
-      font-size: 2rem;
-      line-height: 1.2;
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(3rem, 8vw, 6.8rem);
+      line-height: 0.94;
     }
 
-    h3 {
-      margin: 0 0 8px;
-      color: var(--ink-color);
+    .positioning {
+      max-width: 680px;
+      margin: 26px 0 0;
+      color: #34423f;
+      font-size: clamp(1.25rem, 2.4vw, 1.72rem);
+      line-height: 1.55;
     }
 
     .lead {
       max-width: 620px;
-      margin: 22px 0 0;
-      color: var(--muted-color);
-      font-size: 1.16rem;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 1.04rem;
     }
 
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 30px;
+      margin-top: 34px;
     }
 
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 0 18px;
-      border: 1px solid var(--primary-dark);
+    .hero-actions a {
+      width: auto;
+      margin: 0;
       border-radius: 999px;
-      text-decoration: none;
-      font-weight: 700;
+      font-weight: 750;
     }
 
-    .button.primary {
-      color: var(--background-color);
-      background: var(--primary-dark);
+    .hero-card {
+      position: relative;
+      padding: 14px;
+      border: 1px solid rgba(219, 231, 227, 0.95);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
     }
 
-    .button.secondary {
-      color: var(--primary-dark);
-      background: var(--surface-color);
+    .hero-card img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border-radius: 6px;
+      object-fit: cover;
     }
 
-    .quick-facts {
+    .image-note {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 32px;
+      gap: 10px;
+      margin-top: 14px;
     }
 
-    .fact {
-      min-height: 96px;
-      padding: 16px;
-      border: 1px solid var(--line-color);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.82);
+    .image-note span {
+      min-height: 76px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.76);
+      font-size: 0.88rem;
     }
 
-    [data-theme="dark"] .fact {
-      background: rgba(23, 35, 33, 0.86);
-    }
-
-    .fact strong {
+    .image-note strong {
       display: block;
-      color: var(--ink-color);
-      font-size: 1.35rem;
-      line-height: 1;
-    }
-
-    .fact span {
-      display: block;
-      margin-top: 8px;
-      color: var(--muted-color);
-      font-size: 0.92rem;
+      margin-bottom: 4px;
+      color: var(--ink);
+      font-size: 1.02rem;
     }
 
     .section-heading {
       display: grid;
-      grid-template-columns: 0.72fr 1fr;
-      gap: 32px;
+      grid-template-columns: minmax(240px, 0.62fr) minmax(0, 1fr);
+      gap: clamp(24px, 5vw, 64px);
       align-items: end;
-      margin-bottom: 28px;
+      margin-bottom: 34px;
+    }
+
+    .section-kicker {
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      line-height: 1.02;
     }
 
     .section-heading p {
       margin: 0;
-      color: var(--muted-color);
+      color: var(--muted);
+      font-size: 1.04rem;
     }
 
-    .skill-list-wrap {
+    .card-grid {
       display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
 
-    .skill-grid {
+    .work-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
     }
 
-    .skill-card,
-    .contact-panel {
-      padding: 22px;
-      border: 1px solid var(--line-color);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.88);
-      box-shadow: 0 10px 26px rgba(18, 47, 43, 0.06);
-    }
-
-    [data-theme="dark"] .skill-card,
-    [data-theme="dark"] .contact-panel {
-      background: rgba(23, 35, 33, 0.9);
-    }
-
-    .skill-card .icon {
-      display: inline-grid;
-      place-items: center;
-      width: 42px;
-      height: 42px;
-      margin-bottom: 16px;
-      border-radius: 50%;
-      color: #fff;
-      background: var(--primary-color);
-      font-size: 1.2rem;
-      font-weight: 800;
-    }
-
-    .skill-card:nth-child(2) .icon {
-      background: var(--accent-color);
-    }
-
-    .skill-card:nth-child(3) .icon {
-      color: var(--ink-color);
-      background: var(--gold-color);
-    }
-
-    .skill-card p,
-    .project-card p,
-    .contact-panel p {
-      margin: 0;
-      color: var(--muted-color);
-    }
-
-    .more-skills {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.28s ease;
-    }
-
-    .more-skills.is-open {
-      grid-template-rows: 1fr;
-    }
-
-    .more-skills-inner {
-      overflow: hidden;
-    }
-
-    .routine {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .routine-item {
-      display: grid;
-      grid-template-columns: 82px 1fr;
-      gap: 18px;
-      padding: 18px;
-      border: 1px solid var(--line-color);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.72);
-    }
-
-    [data-theme="dark"] .routine-item {
-      background: rgba(23, 35, 33, 0.72);
-    }
-
-    .time {
-      color: var(--primary-dark);
-      font-weight: 800;
-    }
-
-    .routine-item p {
-      margin: 4px 0 0;
-      color: var(--muted-color);
-    }
-
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 22px;
-    }
-
-    .project-card {
+    .portfolio-card {
       position: relative;
-      min-height: 260px;
+      min-height: 100%;
       padding: 24px;
       overflow: hidden;
-      background: var(--surface-color);
-      border: 1px solid var(--line-color);
-      border-radius: 8px;
-      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-strong);
+      box-shadow: 0 12px 30px rgba(22, 54, 49, 0.06);
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
     }
 
-    .project-card::before {
-      content: "";
-      display: block;
-      width: 100%;
-      height: 118px;
-      margin-bottom: 22px;
-      border-radius: 6px;
-      background:
-        linear-gradient(135deg, rgba(7, 95, 92, 0.9), rgba(17, 127, 122, 0.5)),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.35) 0 8px, transparent 8px 18px);
+    .portfolio-card:hover {
+      border-color: rgba(15, 118, 110, 0.34);
+      box-shadow: 0 22px 44px rgba(22, 54, 49, 0.12);
+      transform: translateY(-4px);
     }
 
-    .project-card:nth-child(2)::before {
+    .work-card {
+      display: grid;
+      grid-template-rows: 150px 1fr;
+      padding: 0;
+    }
+
+    .work-visual {
+      border-bottom: 1px solid var(--line);
       background:
-        radial-gradient(circle at 35% 35%, rgba(244, 189, 79, 0.95), transparent 34%),
-        linear-gradient(135deg, rgba(229, 107, 79, 0.9), rgba(244, 189, 79, 0.5));
+        linear-gradient(135deg, rgba(7, 95, 92, 0.9), rgba(111, 201, 196, 0.55)),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.36) 0 8px, transparent 8px 18px);
+    }
+
+    .work-card:nth-child(2) .work-visual {
+      background:
+        radial-gradient(circle at 34% 36%, rgba(242, 189, 84, 0.96), transparent 34%),
+        linear-gradient(135deg, rgba(229, 107, 79, 0.9), rgba(242, 189, 84, 0.5));
+    }
+
+    .work-body {
+      padding: 24px;
+    }
+
+    .portfolio-card h3 {
+      margin-bottom: 10px;
+      font-size: 1.22rem;
+    }
+
+    .portfolio-card p {
+      margin: 0;
+      color: var(--muted);
     }
 
     .tag-list {
@@ -459,355 +319,325 @@
       flex-wrap: wrap;
       gap: 8px;
       padding: 0;
-      margin: 18px 0 22px;
+      margin: 20px 0 0;
       list-style: none;
     }
 
     .tag-list li {
       padding: 6px 10px;
-      border: 1px solid var(--line-color);
+      border: 1px solid var(--line);
       border-radius: 999px;
-      color: var(--muted-color);
-      background: rgba(247, 251, 250, 0.86);
-      font-size: 0.86rem;
+      color: #50605c;
+      background: #f8fbfa;
+      font-size: 0.84rem;
     }
 
-    [data-theme="dark"] .tag-list li {
-      background: rgba(16, 25, 24, 0.82);
-    }
-
-    .project-card a {
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    .contact-wrap {
+    .about-layout {
       display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 22px;
+      grid-template-columns: minmax(280px, 0.74fr) minmax(0, 1.26fr);
+      gap: 20px;
       align-items: stretch;
     }
 
-    .contact-list {
+    .statement {
       display: grid;
-      gap: 12px;
-      padding: 0;
-      margin: 20px 0 0;
-      list-style: none;
+      place-items: end start;
+      color: #fff;
+      background: linear-gradient(135deg, #075f5c, #117f7a);
     }
 
-    .contact-list a {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
+    .statement p {
+      max-width: 360px;
+      margin: 0;
+      color: #eefdfb;
+      font-size: clamp(1.35rem, 2.6vw, 2rem);
+      line-height: 1.42;
+    }
+
+    .about-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
-      padding: 14px 16px;
-      border: 1px solid var(--line-color);
-      border-radius: 8px;
-      background: var(--surface-color);
-      text-decoration: none;
     }
 
-    .contact-list strong {
-      overflow-wrap: anywhere;
-      text-align: right;
+    .contact-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 20px;
+      align-items: stretch;
     }
 
     .contact-note {
       display: grid;
-      place-items: center;
-      min-height: 100%;
-      padding: 34px;
-      border-radius: 8px;
+      place-items: center start;
       color: #fff;
-      background: #075f5c;
-    }
-
-    [data-theme="dark"] .contact-note {
-      color: #101918;
-      background: #8ff0eb;
+      background: #17211f;
     }
 
     .contact-note p {
       max-width: 360px;
       margin: 0;
-      font-size: 1.3rem;
+      color: #f4fbfa;
+      font-size: 1.34rem;
       line-height: 1.55;
     }
 
-    .back-to-top {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      z-index: 20;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(10px);
-      transition: opacity 0.2s ease, transform 0.2s ease;
+    .link-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
     }
 
-    .back-to-top.is-visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
+    .link-list a {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--ink);
+      background: #fbfdfc;
+      text-decoration: none;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
     }
 
-    .site-footer {
-      padding: 28px 0 36px;
-      color: var(--muted-color);
+    .link-list a:hover {
+      border-color: rgba(15, 118, 110, 0.34);
+      background: #f4fbfa;
+      transform: translateX(4px);
+    }
+
+    .link-list strong {
+      overflow-wrap: anywhere;
+      text-align: right;
+    }
+
+    footer {
+      padding: 30px 0 42px;
+      color: var(--muted);
+      font-size: 0.94rem;
     }
 
     @media (max-width: 860px) {
-      .intro-content,
+      body > header,
+      body > main,
+      body > footer {
+        width: min(100% - 28px, 1160px);
+      }
+
+      .hero,
       .section-heading,
-      .skill-grid,
-      .routine,
-      .project-grid,
-      .contact-wrap {
+      .work-grid,
+      .about-layout,
+      .contact-panel {
         grid-template-columns: 1fr;
       }
 
-      .intro-content {
+      .hero {
         min-height: auto;
-        gap: 28px;
+        padding-top: 56px;
       }
 
-      .avatar {
-        max-height: 520px;
-      }
-
-      .quick-facts {
+      .card-grid,
+      .about-list {
         grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 720px) {
-      .site-header {
-        padding-inline: 12px;
+    @media (max-width: 640px) {
+      body > header {
+        padding: 10px 0;
       }
 
-      .site-nav {
-        gap: 12px;
-        overflow: hidden;
+      nav {
+        align-items: center;
       }
 
-      .nav-actions {
-        display: flex;
-        margin-top: 0;
+      .nav-links {
+        max-width: calc(100vw - 112px);
       }
 
-      .nav-list {
-        display: flex;
-        gap: 6px;
-      }
-
-      .nav-list a {
-        min-height: 34px;
+      nav a {
         padding-inline: 10px;
-        font-size: 0.92rem;
+        font-size: 0.9rem;
       }
 
-      .icon-button {
-        min-width: 40px;
-        min-height: 40px;
-        padding-inline: 10px;
+      section {
+        padding: 58px 0;
       }
 
-      .avatar {
-        margin-bottom: 24px;
+      h1 {
+        font-size: clamp(2.6rem, 16vw, 4.2rem);
       }
 
-      .routine-item {
+      .positioning {
+        font-size: 1.16rem;
+      }
+
+      .hero-actions a {
+        width: 100%;
+      }
+
+      .image-note {
         grid-template-columns: 1fr;
       }
 
-      .contact-list a,
-      .contact-list strong {
+      .portfolio-card,
+      .work-body {
+        padding: 20px;
+      }
+
+      .link-list a,
+      .link-list strong {
         text-align: left;
       }
     }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <nav class="site-nav" aria-label="主导航">
-      <a class="brand" href="#intro">花卷</a>
-      <div class="nav-actions">
-        <ul class="nav-list">
-          <li><a href="#intro">简介</a></li>
-          <li><a href="#skills">技能</a></li>
-          <li><a href="#projects">作品 / 项目</a></li>
-          <li><a href="#contact">联系方式</a></li>
-        </ul>
-        <button class="icon-button" type="button" id="themeToggle" aria-label="切换深色主题" aria-pressed="false">明暗</button>
-      </div>
+  <header>
+    <nav aria-label="主导航">
+      <a class="brand" href="#intro" aria-label="返回花卷主页">
+        <span class="brand-mark" aria-hidden="true"></span>
+        花卷
+      </a>
+      <ul class="nav-links">
+        <li><a href="#intro">Intro</a></li>
+        <li><a href="#works">Works</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
   </header>
 
   <main>
-    <section id="intro" aria-labelledby="intro-title">
-      <div class="intro-content">
-        <img class="avatar" src="微信图片_20260624111924_2_2.jpg" alt="花卷的头像">
-        <div>
-          <p class="eyebrow">可爱生活观察员</p>
-          <h1 id="intro-title">你好，我是花卷，一只认真把日子过软的猫</h1>
-          <p class="lead">
-            我是一只很可爱的猫。平时喜欢安静地观察世界，也会认真生活，
-            把每一天过得柔软、自在又有一点点调皮。
-          </p>
-          <div class="hero-actions" aria-label="页面快捷入口">
-            <a class="button primary" href="#projects">看作品</a>
-            <a class="button secondary" href="#contact">联系花卷</a>
-          </div>
-          <div class="quick-facts" aria-label="花卷速览">
-            <div class="fact"><strong>3</strong><span>项拿手技能</span></div>
-            <div class="fact"><strong>2</strong><span>个代表作品</span></div>
-            <div class="fact"><strong>24h</strong><span>持续可爱营业</span></div>
-          </div>
+    <section class="hero" id="intro" aria-labelledby="intro-title">
+      <div>
+        <p class="eyebrow">CAT PORTFOLIO / 2026</p>
+        <h1 id="intro-title">花卷的柔软观察档案</h1>
+        <p class="positioning">一只把日常过成作品的猫，专注于阳光、睡眠、食物与微小灵感。</p>
+        <p class="lead">
+          这里收藏花卷的生活方式、代表作品和轻轻发光的日常片段。页面保持简洁、安静，
+          像一个可以慢慢翻看的私人展厅。
+        </p>
+        <div class="hero-actions" aria-label="主要行动">
+          <a href="#works" role="button">进入内容</a>
+          <a href="https://github.com/Poem-123/huajuan-homepage" role="button" class="secondary" target="_blank" rel="noopener">GitHub</a>
         </div>
+      </div>
+
+      <aside class="hero-card" aria-label="花卷照片与速览">
+        <img src="微信图片_20260624111924_2_2.jpg" alt="花卷的头像">
+        <div class="image-note">
+          <span><strong>身份</strong>生活观察员</span>
+          <span><strong>气质</strong>柔软又清醒</span>
+          <span><strong>状态</strong>持续可爱</span>
+        </div>
+      </aside>
+    </section>
+
+    <section id="works" aria-labelledby="works-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Selected Works</p>
+          <h2 id="works-title">近期小作品</h2>
+        </div>
+        <p>作品不追求宏大，重要的是有温度、有形状，也有花卷自己的名字感。</p>
+      </div>
+
+      <div class="work-grid">
+        <article class="portfolio-card work-card">
+          <div class="work-visual" aria-hidden="true"></div>
+          <div class="work-body">
+            <h3>一朵花</h3>
+            <p>花卷的第一个作品，是一朵安静又可爱的花，适合放在窗边和午后的光里。</p>
+            <ul class="tag-list" aria-label="一朵花标签">
+              <li>温柔</li>
+              <li>明亮</li>
+              <li>可收藏</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="portfolio-card work-card">
+          <div class="work-visual" aria-hidden="true"></div>
+          <div class="work-body">
+            <h3>一个卷</h3>
+            <p>花卷的第二个作品，是一个圆润、柔软、有名字感的卷，适合代表日常的小满足。</p>
+            <ul class="tag-list" aria-label="一个卷标签">
+              <li>圆润</li>
+              <li>松弛</li>
+              <li>有名字感</li>
+            </ul>
+          </div>
+        </article>
       </div>
     </section>
 
-    <section id="skills" aria-labelledby="skills-title">
+    <section id="about" aria-labelledby="about-title">
       <div class="section-heading">
-        <h2 id="skills-title">技能</h2>
-        <p>花卷的能力并不追求复杂，但讲究稳定、优雅和一点点出其不意。</p>
+        <div>
+          <p class="section-kicker">About Huajuan</p>
+          <h2 id="about-title">花卷的能力结构</h2>
+        </div>
+        <p>把猫的日常整理成作品集，不是为了夸张，而是让每一种可爱都有清楚的层次。</p>
       </div>
-      <div class="skill-list-wrap">
-        <div class="skill-grid">
-          <article class="skill-card">
-            <span class="icon">食</span>
-            <h3>吃饭</h3>
+
+      <div class="about-layout">
+        <article class="portfolio-card statement">
+          <p>把饭点、午睡和出爪都认真完成，就是花卷的创作方法。</p>
+        </article>
+
+        <div class="about-list">
+          <article class="portfolio-card">
+            <h3>饭点雷达</h3>
             <p>准时出现，认真享用每一餐，对食物保持真诚且坚定的热情。</p>
           </article>
-          <article class="skill-card">
-            <span class="icon">眠</span>
-            <h3>睡觉</h3>
+          <article class="portfolio-card">
+            <h3>舒适定位</h3>
             <p>擅长寻找舒服的位置，进入高质量休息，醒来后精神饱满。</p>
           </article>
-          <article class="skill-card">
-            <span class="icon">动</span>
-            <h3>打豆豆</h3>
+          <article class="portfolio-card">
+            <h3>巡视领地</h3>
+            <p>确认窗边、沙发和饭盆状态，开始一天的观察工作。</p>
+          </article>
+          <article class="portfolio-card">
+            <h3>精准出爪</h3>
             <p>动作灵活，出手果断，面对目标时具有优秀的专注力。</p>
           </article>
         </div>
-
-        <div class="more-skills" id="moreSkills">
-          <div class="more-skills-inner">
-            <div class="routine" aria-label="花卷的一天">
-              <div class="routine-item">
-                <div class="time">08:30</div>
-                <div>
-                  <strong>巡视领地</strong>
-                  <p>确认窗边、沙发和饭盆状态，开始一天的观察工作。</p>
-                </div>
-              </div>
-              <div class="routine-item">
-                <div class="time">15:00</div>
-                <div>
-                  <strong>灵感小睡</strong>
-                  <p>把阳光、毯子和安静角落组合成一个高效恢复方案。</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <button class="button secondary" type="button" id="skillsToggle" aria-controls="moreSkills" aria-expanded="false">展开花卷的一天</button>
-      </div>
-    </section>
-
-    <section id="projects" aria-labelledby="projects-title">
-      <div class="section-heading">
-        <h2 id="projects-title">作品 / 项目</h2>
-        <p>这些项目记录了花卷的审美方向：柔软、圆润、带一点名字本身的幽默感。</p>
-      </div>
-
-      <div class="project-grid">
-        <article class="project-card">
-          <h3>一朵花</h3>
-          <p>花卷的第一个作品，是一朵安静又可爱的花，适合放在窗边和午后的光里。</p>
-          <ul class="tag-list" aria-label="一朵花标签">
-            <li>温柔</li>
-            <li>明亮</li>
-            <li>可收藏</li>
-          </ul>
-          <a href="#" aria-label="查看一朵花">查看项目</a>
-        </article>
-
-        <article class="project-card">
-          <h3>一个卷</h3>
-          <p>花卷的第二个作品，是一个圆润、柔软、有名字感的卷，适合代表日常的小满足。</p>
-          <ul class="tag-list" aria-label="一个卷标签">
-            <li>圆润</li>
-            <li>松弛</li>
-            <li>有名字感</li>
-          </ul>
-          <a href="#" aria-label="查看一个卷">查看项目</a>
-        </article>
       </div>
     </section>
 
     <section id="contact" aria-labelledby="contact-title">
-      <div class="contact-wrap">
-        <div class="contact-panel">
-          <h2 id="contact-title">联系方式</h2>
-          <p>想邀请花卷看花、看卷，或者讨论一顿饭的严肃意义，可以从这里开始。</p>
-          <ul class="contact-list">
-            <li><a href="mailto:hello@huajuan.com"><span>邮箱</span><strong>hello@huajuan.com</strong></a></li>
-            <li><a href="https://github.com/huajuan" target="_blank" rel="noopener"><span>GitHub</span><strong>github.com/huajuan</strong></a></li>
-            <li><a href="https://www.linkedin.com/in/huajuan" target="_blank" rel="noopener"><span>LinkedIn</span><strong>linkedin.com/in/huajuan</strong></a></li>
-          </ul>
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Contact</p>
+          <h2 id="contact-title">和花卷打个招呼</h2>
         </div>
-        <div class="contact-note">
+        <p>想邀请花卷看花、看卷，或者讨论一顿饭的严肃意义，可以从这里开始。</p>
+      </div>
+
+      <div class="contact-panel">
+        <article class="portfolio-card contact-note">
           <p>保持好奇，保持柔软，也记得准时吃饭。花卷会在舒服的位置等你。</p>
-        </div>
+        </article>
+
+        <article class="portfolio-card">
+          <ul class="link-list">
+            <li><a href="mailto:hello@huajuan.com"><span>邮箱</span><strong>hello@huajuan.com</strong></a></li>
+            <li><a href="https://github.com/Poem-123/huajuan-homepage" target="_blank" rel="noopener"><span>GitHub</span><strong>Poem-123/huajuan-homepage</strong></a></li>
+            <li><a href="https://poem-123.github.io/huajuan-homepage/" target="_blank" rel="noopener"><span>Live Page</span><strong>poem-123.github.io</strong></a></li>
+          </ul>
+        </article>
       </div>
     </section>
   </main>
 
-  <button class="icon-button back-to-top" type="button" id="backToTop" aria-label="返回顶部">↑</button>
-
-  <footer class="site-footer">
-    <p>&copy; 2026 花卷。保留所有权利。</p>
+  <footer>
+    <p>&copy; 2026 花卷。以轻柔、清醒和一点点调皮持续更新。</p>
   </footer>
-
-  <script>
-    const root = document.documentElement;
-    const themeToggle = document.querySelector("#themeToggle");
-    const skillsToggle = document.querySelector("#skillsToggle");
-    const moreSkills = document.querySelector("#moreSkills");
-    const backToTop = document.querySelector("#backToTop");
-
-    function setTheme(theme) {
-      root.dataset.theme = theme;
-      themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
-      themeToggle.textContent = theme === "dark" ? "浅色" : "明暗";
-      localStorage.setItem("huajuan-theme", theme);
-    }
-
-    const savedTheme = localStorage.getItem("huajuan-theme");
-    if (savedTheme === "dark") {
-      setTheme("dark");
-    }
-
-    themeToggle.addEventListener("click", () => {
-      setTheme(root.dataset.theme === "dark" ? "light" : "dark");
-    });
-
-    skillsToggle.addEventListener("click", () => {
-      const isOpen = moreSkills.classList.toggle("is-open");
-      skillsToggle.setAttribute("aria-expanded", String(isOpen));
-      skillsToggle.textContent = isOpen ? "收起花卷的一天" : "展开花卷的一天";
-    });
-
-    window.addEventListener("scroll", () => {
-      backToTop.classList.toggle("is-visible", window.scrollY > 420);
-    }, { passive: true });
-
-    backToTop.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  </script>
 </body>
 </html>
