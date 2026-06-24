@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="花卷的自我介绍网页，包含简介、技能、项目和联系方式。">
+  <title>花卷的自我介绍</title>
+  <style>
+    :root {
+      --primary-color: #117f7a;
+      --primary-dark: #075f5c;
+      --accent-color: #e56b4f;
+      --gold-color: #f4bd4f;
+      --ink-color: #18232d;
+      --text-color: #26323d;
+      --muted-color: #65717d;
+      --background-color: #f5f8f6;
+      --surface-color: #ffffff;
+      --line-color: #d7e4df;
+      --shadow: 0 18px 42px rgba(18, 47, 43, 0.12);
+    }
+
+    [data-theme="dark"] {
+      --primary-color: #32d1ca;
+      --primary-dark: #8ff0eb;
+      --accent-color: #ff977d;
+      --gold-color: #f6c85d;
+      --ink-color: #f3fbfa;
+      --text-color: #d9e8e6;
+      --muted-color: #9db1ae;
+      --background-color: #101918;
+      --surface-color: #172321;
+      --line-color: #28413d;
+      --shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background:
+        linear-gradient(135deg, rgba(17, 127, 122, 0.12), transparent 34%),
+        linear-gradient(315deg, rgba(229, 107, 79, 0.13), transparent 30%),
+        var(--background-color);
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    [data-theme="dark"] body {
+      background:
+        linear-gradient(135deg, rgba(50, 209, 202, 0.12), transparent 34%),
+        linear-gradient(315deg, rgba(255, 151, 125, 0.12), transparent 30%),
+        var(--background-color);
+    }
+
+    a {
+      color: var(--primary-dark);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .site-header,
+    main,
+    .site-footer {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    section {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--line-color);
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      width: 100%;
+      padding: 14px max(16px, calc((100% - 1160px) / 2));
+      background: rgba(245, 248, 246, 0.9);
+      border-bottom: 1px solid rgba(215, 228, 223, 0.78);
+      backdrop-filter: blur(12px);
+    }
+
+    [data-theme="dark"] .site-header {
+      background: rgba(16, 25, 24, 0.9);
+      border-bottom-color: rgba(40, 65, 61, 0.86);
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-width: 0;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-actions::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-list {
+      display: flex;
+      flex: 0 0 auto;
+      gap: 10px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .nav-list a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 999px;
+      color: var(--text-color);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-list a:hover {
+      background: rgba(17, 127, 122, 0.1);
+      color: var(--primary-dark);
+    }
+
+    .brand,
+    h1,
+    h2 {
+      color: var(--primary-dark);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 1.08rem;
+      text-decoration: none;
+    }
+
+    .brand::before {
+      content: "";
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      box-shadow: 16px 0 0 var(--gold-color);
+    }
+
+    .icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      min-height: 42px;
+      padding: 0 12px;
+      border: 1px solid var(--line-color);
+      border-radius: 999px;
+      color: var(--primary-dark);
+      background: var(--surface-color);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      box-shadow: 0 8px 18px rgba(18, 47, 43, 0.08);
+    }
+
+    .icon-button:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-1px);
+    }
+
+    .intro-content {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.85fr) minmax(320px, 1.15fr);
+      gap: 48px;
+      align-items: center;
+      min-height: calc(100vh - 80px);
+      padding: 32px 0 56px;
+    }
+
+    .avatar {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border-radius: 28px;
+      object-fit: cover;
+      background: #d4f2f0;
+      border: 10px solid var(--surface-color);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      color: var(--accent-color);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    h1 {
+      max-width: 680px;
+      margin: 0;
+      font-size: clamp(2.25rem, 6vw, 5rem);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 22px;
+      font-size: 2rem;
+      line-height: 1.2;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      color: var(--ink-color);
+    }
+
+    .lead {
+      max-width: 620px;
+      margin: 22px 0 0;
+      color: var(--muted-color);
+      font-size: 1.16rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--primary-dark);
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .button.primary {
+      color: var(--background-color);
+      background: var(--primary-dark);
+    }
+
+    .button.secondary {
+      color: var(--primary-dark);
+      background: var(--surface-color);
+    }
+
+    .quick-facts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .fact {
+      min-height: 96px;
+      padding: 16px;
+      border: 1px solid var(--line-color);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    [data-theme="dark"] .fact {
+      background: rgba(23, 35, 33, 0.86);
+    }
+
+    .fact strong {
+      display: block;
+      color: var(--ink-color);
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .fact span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted-color);
+      font-size: 0.92rem;
+    }
+
+    .section-heading {
+      display: grid;
+      grid-template-columns: 0.72fr 1fr;
+      gap: 32px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--muted-color);
+    }
+
+    .skill-list-wrap {
+      display: grid;
+      gap: 18px;
+    }
+
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .skill-card,
+    .contact-panel {
+      padding: 22px;
+      border: 1px solid var(--line-color);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 10px 26px rgba(18, 47, 43, 0.06);
+    }
+
+    [data-theme="dark"] .skill-card,
+    [data-theme="dark"] .contact-panel {
+      background: rgba(23, 35, 33, 0.9);
+    }
+
+    .skill-card .icon {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      margin-bottom: 16px;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--primary-color);
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .skill-card:nth-child(2) .icon {
+      background: var(--accent-color);
+    }
+
+    .skill-card:nth-child(3) .icon {
+      color: var(--ink-color);
+      background: var(--gold-color);
+    }
+
+    .skill-card p,
+    .project-card p,
+    .contact-panel p {
+      margin: 0;
+      color: var(--muted-color);
+    }
+
+    .more-skills {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.28s ease;
+    }
+
+    .more-skills.is-open {
+      grid-template-rows: 1fr;
+    }
+
+    .more-skills-inner {
+      overflow: hidden;
+    }
+
+    .routine {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .routine-item {
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 18px;
+      padding: 18px;
+      border: 1px solid var(--line-color);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    [data-theme="dark"] .routine-item {
+      background: rgba(23, 35, 33, 0.72);
+    }
+
+    .time {
+      color: var(--primary-dark);
+      font-weight: 800;
+    }
+
+    .routine-item p {
+      margin: 4px 0 0;
+      color: var(--muted-color);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+    }
+
+    .project-card {
+      position: relative;
+      min-height: 260px;
+      padding: 24px;
+      overflow: hidden;
+      background: var(--surface-color);
+      border: 1px solid var(--line-color);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .project-card::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 118px;
+      margin-bottom: 22px;
+      border-radius: 6px;
+      background:
+        linear-gradient(135deg, rgba(7, 95, 92, 0.9), rgba(17, 127, 122, 0.5)),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.35) 0 8px, transparent 8px 18px);
+    }
+
+    .project-card:nth-child(2)::before {
+      background:
+        radial-gradient(circle at 35% 35%, rgba(244, 189, 79, 0.95), transparent 34%),
+        linear-gradient(135deg, rgba(229, 107, 79, 0.9), rgba(244, 189, 79, 0.5));
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0;
+      margin: 18px 0 22px;
+      list-style: none;
+    }
+
+    .tag-list li {
+      padding: 6px 10px;
+      border: 1px solid var(--line-color);
+      border-radius: 999px;
+      color: var(--muted-color);
+      background: rgba(247, 251, 250, 0.86);
+      font-size: 0.86rem;
+    }
+
+    [data-theme="dark"] .tag-list li {
+      background: rgba(16, 25, 24, 0.82);
+    }
+
+    .project-card a {
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 12px;
+      padding: 0;
+      margin: 20px 0 0;
+      list-style: none;
+    }
+
+    .contact-list a {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 14px 16px;
+      border: 1px solid var(--line-color);
+      border-radius: 8px;
+      background: var(--surface-color);
+      text-decoration: none;
+    }
+
+    .contact-list strong {
+      overflow-wrap: anywhere;
+      text-align: right;
+    }
+
+    .contact-note {
+      display: grid;
+      place-items: center;
+      min-height: 100%;
+      padding: 34px;
+      border-radius: 8px;
+      color: #fff;
+      background: #075f5c;
+    }
+
+    [data-theme="dark"] .contact-note {
+      color: #101918;
+      background: #8ff0eb;
+    }
+
+    .contact-note p {
+      max-width: 360px;
+      margin: 0;
+      font-size: 1.3rem;
+      line-height: 1.55;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-to-top.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .site-footer {
+      padding: 28px 0 36px;
+      color: var(--muted-color);
+    }
+
+    @media (max-width: 860px) {
+      .intro-content,
+      .section-heading,
+      .skill-grid,
+      .routine,
+      .project-grid,
+      .contact-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .intro-content {
+        min-height: auto;
+        gap: 28px;
+      }
+
+      .avatar {
+        max-height: 520px;
+      }
+
+      .quick-facts {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .site-header {
+        padding-inline: 12px;
+      }
+
+      .site-nav {
+        gap: 12px;
+        overflow: hidden;
+      }
+
+      .nav-actions {
+        display: flex;
+        margin-top: 0;
+      }
+
+      .nav-list {
+        display: flex;
+        gap: 6px;
+      }
+
+      .nav-list a {
+        min-height: 34px;
+        padding-inline: 10px;
+        font-size: 0.92rem;
+      }
+
+      .icon-button {
+        min-width: 40px;
+        min-height: 40px;
+        padding-inline: 10px;
+      }
+
+      .avatar {
+        margin-bottom: 24px;
+      }
+
+      .routine-item {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-list a,
+      .contact-list strong {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav" aria-label="主导航">
+      <a class="brand" href="#intro">花卷</a>
+      <div class="nav-actions">
+        <ul class="nav-list">
+          <li><a href="#intro">简介</a></li>
+          <li><a href="#skills">技能</a></li>
+          <li><a href="#projects">作品 / 项目</a></li>
+          <li><a href="#contact">联系方式</a></li>
+        </ul>
+        <button class="icon-button" type="button" id="themeToggle" aria-label="切换深色主题" aria-pressed="false">明暗</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="intro" aria-labelledby="intro-title">
+      <div class="intro-content">
+        <img class="avatar" src="微信图片_20260624111924_2_2.jpg" alt="花卷的头像">
+        <div>
+          <p class="eyebrow">可爱生活观察员</p>
+          <h1 id="intro-title">你好，我是花卷，一只认真把日子过软的猫</h1>
+          <p class="lead">
+            我是一只很可爱的猫。平时喜欢安静地观察世界，也会认真生活，
+            把每一天过得柔软、自在又有一点点调皮。
+          </p>
+          <div class="hero-actions" aria-label="页面快捷入口">
+            <a class="button primary" href="#projects">看作品</a>
+            <a class="button secondary" href="#contact">联系花卷</a>
+          </div>
+          <div class="quick-facts" aria-label="花卷速览">
+            <div class="fact"><strong>3</strong><span>项拿手技能</span></div>
+            <div class="fact"><strong>2</strong><span>个代表作品</span></div>
+            <div class="fact"><strong>24h</strong><span>持续可爱营业</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" aria-labelledby="skills-title">
+      <div class="section-heading">
+        <h2 id="skills-title">技能</h2>
+        <p>花卷的能力并不追求复杂，但讲究稳定、优雅和一点点出其不意。</p>
+      </div>
+      <div class="skill-list-wrap">
+        <div class="skill-grid">
+          <article class="skill-card">
+            <span class="icon">食</span>
+            <h3>吃饭</h3>
+            <p>准时出现，认真享用每一餐，对食物保持真诚且坚定的热情。</p>
+          </article>
+          <article class="skill-card">
+            <span class="icon">眠</span>
+            <h3>睡觉</h3>
+            <p>擅长寻找舒服的位置，进入高质量休息，醒来后精神饱满。</p>
+          </article>
+          <article class="skill-card">
+            <span class="icon">动</span>
+            <h3>打豆豆</h3>
+            <p>动作灵活，出手果断，面对目标时具有优秀的专注力。</p>
+          </article>
+        </div>
+
+        <div class="more-skills" id="moreSkills">
+          <div class="more-skills-inner">
+            <div class="routine" aria-label="花卷的一天">
+              <div class="routine-item">
+                <div class="time">08:30</div>
+                <div>
+                  <strong>巡视领地</strong>
+                  <p>确认窗边、沙发和饭盆状态，开始一天的观察工作。</p>
+                </div>
+              </div>
+              <div class="routine-item">
+                <div class="time">15:00</div>
+                <div>
+                  <strong>灵感小睡</strong>
+                  <p>把阳光、毯子和安静角落组合成一个高效恢复方案。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="button secondary" type="button" id="skillsToggle" aria-controls="moreSkills" aria-expanded="false">展开花卷的一天</button>
+      </div>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <div class="section-heading">
+        <h2 id="projects-title">作品 / 项目</h2>
+        <p>这些项目记录了花卷的审美方向：柔软、圆润、带一点名字本身的幽默感。</p>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card">
+          <h3>一朵花</h3>
+          <p>花卷的第一个作品，是一朵安静又可爱的花，适合放在窗边和午后的光里。</p>
+          <ul class="tag-list" aria-label="一朵花标签">
+            <li>温柔</li>
+            <li>明亮</li>
+            <li>可收藏</li>
+          </ul>
+          <a href="#" aria-label="查看一朵花">查看项目</a>
+        </article>
+
+        <article class="project-card">
+          <h3>一个卷</h3>
+          <p>花卷的第二个作品，是一个圆润、柔软、有名字感的卷，适合代表日常的小满足。</p>
+          <ul class="tag-list" aria-label="一个卷标签">
+            <li>圆润</li>
+            <li>松弛</li>
+            <li>有名字感</li>
+          </ul>
+          <a href="#" aria-label="查看一个卷">查看项目</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <div class="contact-wrap">
+        <div class="contact-panel">
+          <h2 id="contact-title">联系方式</h2>
+          <p>想邀请花卷看花、看卷，或者讨论一顿饭的严肃意义，可以从这里开始。</p>
+          <ul class="contact-list">
+            <li><a href="mailto:hello@huajuan.com"><span>邮箱</span><strong>hello@huajuan.com</strong></a></li>
+            <li><a href="https://github.com/huajuan" target="_blank" rel="noopener"><span>GitHub</span><strong>github.com/huajuan</strong></a></li>
+            <li><a href="https://www.linkedin.com/in/huajuan" target="_blank" rel="noopener"><span>LinkedIn</span><strong>linkedin.com/in/huajuan</strong></a></li>
+          </ul>
+        </div>
+        <div class="contact-note">
+          <p>保持好奇，保持柔软，也记得准时吃饭。花卷会在舒服的位置等你。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="icon-button back-to-top" type="button" id="backToTop" aria-label="返回顶部">↑</button>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 花卷。保留所有权利。</p>
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const themeToggle = document.querySelector("#themeToggle");
+    const skillsToggle = document.querySelector("#skillsToggle");
+    const moreSkills = document.querySelector("#moreSkills");
+    const backToTop = document.querySelector("#backToTop");
+
+    function setTheme(theme) {
+      root.dataset.theme = theme;
+      themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+      themeToggle.textContent = theme === "dark" ? "浅色" : "明暗";
+      localStorage.setItem("huajuan-theme", theme);
+    }
+
+    const savedTheme = localStorage.getItem("huajuan-theme");
+    if (savedTheme === "dark") {
+      setTheme("dark");
+    }
+
+    themeToggle.addEventListener("click", () => {
+      setTheme(root.dataset.theme === "dark" ? "light" : "dark");
+    });
+
+    skillsToggle.addEventListener("click", () => {
+      const isOpen = moreSkills.classList.toggle("is-open");
+      skillsToggle.setAttribute("aria-expanded", String(isOpen));
+      skillsToggle.textContent = isOpen ? "收起花卷的一天" : "展开花卷的一天";
+    });
+
+    window.addEventListener("scroll", () => {
+      backToTop.classList.toggle("is-visible", window.scrollY > 420);
+    }, { passive: true });
+
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
