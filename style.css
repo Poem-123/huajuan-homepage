@@ -1,0 +1,673 @@
+/* 全局颜色变量：后面所有颜色都尽量从这里取，方便统一换主题。 */
+:root {
+  --primary-color: #117f7a;
+  --primary-dark: #075f5c;
+  --accent-color: #e56b4f;
+  --gold-color: #f4bd4f;
+  --ink-color: #18232d;
+  --text-color: #26323d;
+  --muted-color: #65717d;
+  --background-color: #f5f8f6;
+  --surface-color: #ffffff;
+  --line-color: #d7e4df;
+  --shadow: 0 18px 42px rgba(18, 47, 43, 0.12);
+}
+
+/* 当 html 标签被 JS 加上 data-theme="dark" 时，下面这组颜色会覆盖浅色主题。 */
+[data-theme="dark"] {
+  --primary-color: #32d1ca;
+  --primary-dark: #8ff0eb;
+  --accent-color: #ff977d;
+  --gold-color: #f6c85d;
+  --ink-color: #f3fbfa;
+  --text-color: #d9e8e6;
+  --muted-color: #9db1ae;
+  --background-color: #101918;
+  --surface-color: #172321;
+  --line-color: #28413d;
+  --shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
+}
+
+/* border-box 让宽高计算更直观：元素宽度会包含 padding 和 border。 */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, "Microsoft YaHei", sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background:
+    linear-gradient(135deg, rgba(17, 127, 122, 0.12), transparent 34%),
+    linear-gradient(315deg, rgba(229, 107, 79, 0.13), transparent 30%),
+    var(--background-color);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* 深色主题下，背景渐变也换成更适合深色的透明色。 */
+[data-theme="dark"] body {
+  background:
+    linear-gradient(135deg, rgba(50, 209, 202, 0.12), transparent 34%),
+    linear-gradient(315deg, rgba(255, 151, 125, 0.12), transparent 30%),
+    var(--background-color);
+}
+
+a {
+  color: var(--primary-dark);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.site-header,
+main,
+.site-footer {
+  width: min(1160px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+/* 每个 section 是页面的一大块内容，统一控制上下留白和分隔线。 */
+section {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--line-color);
+}
+
+/* sticky 让导航在滚动时吸在顶部；backdrop-filter 让背景有磨砂感。 */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  padding: 14px max(16px, calc((100% - 1160px) / 2));
+  background: rgba(245, 248, 246, 0.9);
+  border-bottom: 1px solid rgba(215, 228, 223, 0.78);
+  backdrop-filter: blur(12px);
+}
+
+[data-theme="dark"] .site-header {
+  background: rgba(16, 25, 24, 0.9);
+  border-bottom-color: rgba(40, 65, 61, 0.86);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-width: 0;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+/* 小屏幕宽度不够时，导航内部横向滚动，但不显示滚动条。 */
+.nav-actions::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-list {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.nav-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: var(--text-color);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-list a:hover {
+  background: rgba(17, 127, 122, 0.1);
+  color: var(--primary-dark);
+}
+
+.nav-list a:focus-visible,
+.button:focus-visible,
+.icon-button:focus-visible,
+.project-card a:focus-visible,
+.contact-list a:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+.brand,
+h1,
+h2 {
+  color: var(--primary-dark);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 1.08rem;
+  text-decoration: none;
+}
+
+.brand::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  box-shadow: 16px 0 0 var(--gold-color);
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--line-color);
+  border-radius: 999px;
+  color: var(--primary-dark);
+  background: var(--surface-color);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(18, 47, 43, 0.08);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.icon-button:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+.intro-content {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) minmax(320px, 1.15fr);
+  gap: 48px;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  padding: 32px 0 56px;
+}
+
+.avatar {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 28px;
+  object-fit: cover;
+  background: #d4f2f0;
+  border: 10px solid var(--surface-color);
+  box-shadow: var(--shadow);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  color: var(--accent-color);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+/* clamp 会在最小值和最大值之间自动调字号，适合响应式标题。 */
+h1 {
+  max-width: 680px;
+  margin: 0;
+  font-size: clamp(2.25rem, 6vw, 5rem);
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+
+h2 {
+  margin: 0 0 22px;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+h3 {
+  margin: 0 0 8px;
+  color: var(--ink-color);
+}
+
+.lead {
+  max-width: 620px;
+  margin: 22px 0 0;
+  color: var(--muted-color);
+  font-size: 1.16rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--primary-dark);
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button.primary {
+  color: var(--background-color);
+  background: var(--primary-dark);
+}
+
+.button.secondary {
+  color: var(--primary-dark);
+  background: var(--surface-color);
+}
+
+.quick-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.fact {
+  min-height: 96px;
+  padding: 16px;
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+[data-theme="dark"] .fact {
+  background: rgba(23, 35, 33, 0.86);
+}
+
+.fact strong {
+  display: block;
+  color: var(--ink-color);
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.fact span {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted-color);
+  font-size: 0.92rem;
+}
+
+.section-heading {
+  display: grid;
+  grid-template-columns: 0.72fr 1fr;
+  gap: 32px;
+  align-items: end;
+  margin-bottom: 28px;
+}
+
+.section-heading p {
+  margin: 0;
+  color: var(--muted-color);
+}
+
+.skill-list-wrap {
+  display: grid;
+  gap: 18px;
+}
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.skill-card,
+.contact-panel {
+  padding: 22px;
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 26px rgba(18, 47, 43, 0.06);
+}
+
+[data-theme="dark"] .skill-card,
+[data-theme="dark"] .contact-panel {
+  background: rgba(23, 35, 33, 0.9);
+}
+
+.skill-card .icon {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.skill-card:nth-child(2) .icon {
+  background: var(--accent-color);
+}
+
+.skill-card:nth-child(3) .icon {
+  color: var(--ink-color);
+  background: var(--gold-color);
+}
+
+.skill-card p,
+.project-card p,
+.contact-panel p {
+  margin: 0;
+  color: var(--muted-color);
+}
+
+.more-skills {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s ease;
+}
+
+/* 展开/收起动画：JS 只切换 is-open，CSS 负责让高度平滑变化。 */
+.more-skills.is-open {
+  grid-template-rows: 1fr;
+}
+
+.more-skills-inner {
+  overflow: hidden;
+}
+
+.routine {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.routine-item {
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+[data-theme="dark"] .routine-item {
+  background: rgba(23, 35, 33, 0.72);
+}
+
+.time {
+  color: var(--primary-dark);
+  font-weight: 800;
+}
+
+.routine-item p {
+  margin: 4px 0 0;
+  color: var(--muted-color);
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.project-card {
+  position: relative;
+  min-height: 260px;
+  padding: 24px;
+  overflow: hidden;
+  background: var(--surface-color);
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 46px rgba(18, 47, 43, 0.16);
+}
+
+.project-card::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 118px;
+  margin-bottom: 22px;
+  border-radius: 6px;
+  background:
+    linear-gradient(135deg, rgba(7, 95, 92, 0.9), rgba(17, 127, 122, 0.5)),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.35) 0 8px, transparent 8px 18px);
+}
+
+.project-card:nth-child(2)::before {
+  background:
+    radial-gradient(circle at 35% 35%, rgba(244, 189, 79, 0.95), transparent 34%),
+    linear-gradient(135deg, rgba(229, 107, 79, 0.9), rgba(244, 189, 79, 0.5));
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 18px 0 22px;
+  list-style: none;
+}
+
+.tag-list li {
+  padding: 6px 10px;
+  border: 1px solid var(--line-color);
+  border-radius: 999px;
+  color: var(--muted-color);
+  background: rgba(247, 251, 250, 0.86);
+  font-size: 0.86rem;
+}
+
+[data-theme="dark"] .tag-list li {
+  background: rgba(16, 25, 24, 0.82);
+}
+
+.project-card a {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.contact-wrap {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.contact-list {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  margin: 20px 0 0;
+  list-style: none;
+}
+
+.contact-list a {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  background: var(--surface-color);
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.contact-list a:hover {
+  border-color: var(--primary-color);
+  transform: translateX(3px);
+}
+
+.contact-list strong {
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+.contact-note {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  padding: 34px;
+  border-radius: 8px;
+  color: #fff;
+  background: #075f5c;
+}
+
+[data-theme="dark"] .contact-note {
+  color: #101918;
+  background: #8ff0eb;
+}
+
+.contact-note p {
+  max-width: 360px;
+  margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.55;
+}
+
+.back-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.site-footer {
+  padding: 28px 0 36px;
+  color: var(--muted-color);
+}
+
+/* 860px 以下通常是平板或手机，复杂网格改成单列更好读。 */
+@media (max-width: 860px) {
+  .intro-content,
+  .section-heading,
+  .skill-grid,
+  .routine,
+  .project-grid,
+  .contact-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-content {
+    min-height: auto;
+    gap: 28px;
+  }
+
+  .avatar {
+    max-height: 520px;
+  }
+
+  .quick-facts {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 720px 以下继续压缩导航、按钮和卡片间距，防止小屏幕挤爆。 */
+@media (max-width: 720px) {
+  .site-header {
+    padding-inline: 12px;
+  }
+
+  .site-nav {
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .nav-actions {
+    display: flex;
+    margin-top: 0;
+  }
+
+  .nav-list {
+    display: flex;
+    gap: 6px;
+  }
+
+  .nav-list a {
+    min-height: 34px;
+    padding-inline: 10px;
+    font-size: 0.92rem;
+  }
+
+  .icon-button {
+    min-width: 40px;
+    min-height: 40px;
+    padding-inline: 10px;
+  }
+
+  .avatar {
+    margin-bottom: 24px;
+  }
+
+  .routine-item {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-list a,
+  .contact-list strong {
+    text-align: left;
+  }
+}
+
+/* 如果用户系统设置了“减少动态效果”，就关闭动画，避免眩晕或不适。 */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
