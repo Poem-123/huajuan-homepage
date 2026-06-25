@@ -16,6 +16,7 @@
       <div class="nav-actions">
         <ul class="nav-list">
           <li><a href="#intro">简介</a></li>
+          <li><a href="#fortune">今日签</a></li>
           <li><a href="#skills">技能</a></li>
           <li><a href="#projects">作品 / 项目</a></li>
           <li><a href="#contact">联系方式</a></li>
@@ -46,6 +47,24 @@
             <div class="fact"><strong>2</strong><span>个代表作品</span></div>
             <div class="fact"><strong>24h</strong><span>持续可爱营业</span></div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- fortune 是新加的趣味功能：点击按钮，会由 script.js 随机生成一条今日花卷签。 -->
+    <section class="fortune-section" id="fortune" aria-labelledby="fortune-title">
+      <div class="fortune-card" id="fortuneCard">
+        <div>
+          <p class="eyebrow">今日花卷签</p>
+          <h2 id="fortune-title">抽一张今天的柔软提示</h2>
+          <p class="fortune-intro">给今天一个轻轻的开场：可能是休息建议，也可能是一句适合放慢脚步的小提醒。</p>
+        </div>
+
+        <div class="fortune-panel" aria-live="polite">
+          <p class="fortune-label">今日签文</p>
+          <p class="fortune-text" id="fortuneText">今天适合把重要的事放慢一点，把喜欢的事靠近一点。</p>
+          <p class="fortune-meta" id="fortuneMeta">幸运动作：找一个舒服的位置</p>
+          <button class="button primary fortune-button" type="button" id="fortuneButton">重新抽签</button>
         </div>
       </div>
     </section>

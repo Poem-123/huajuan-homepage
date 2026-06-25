@@ -6,6 +6,36 @@ const themeToggle = document.querySelector("#themeToggle");
 const skillsToggle = document.querySelector("#skillsToggle");
 const moreSkills = document.querySelector("#moreSkills");
 const backToTop = document.querySelector("#backToTop");
+const fortuneButton = document.querySelector("#fortuneButton");
+const fortuneText = document.querySelector("#fortuneText");
+const fortuneMeta = document.querySelector("#fortuneMeta");
+const fortuneCard = document.querySelector("#fortuneCard");
+
+// 今日花卷签的候选内容。每次点击按钮，会从这里随机挑一条显示出来。
+const fortunes = [
+  {
+    text: "今天适合先完成一件小事，再奖励自己一段安静时间。",
+    meta: "幸运动作：把水杯放近一点"
+  },
+  {
+    text: "如果事情太多，就从最柔软、最容易开始的那一件动手。",
+    meta: "幸运动作：伸个懒腰再继续"
+  },
+  {
+    text: "今天的灵感藏在慢半拍里，不必急着证明什么。",
+    meta: "幸运动作：看一会儿窗外"
+  },
+  {
+    text: "把边角整理好，心情也会跟着亮一点。",
+    meta: "幸运动作：清出一块桌面"
+  },
+  {
+    text: "适合认真吃饭，也适合认真喜欢今天。",
+    meta: "幸运动作：给自己加一道小奖励"
+  }
+];
+
+let currentFortuneIndex = -1;
 
 function setTheme(theme, shouldSave = true) {
   root.dataset.theme = theme;
@@ -40,6 +70,29 @@ if (skillsToggle && moreSkills) {
     const isOpen = moreSkills.classList.toggle("is-open");
     skillsToggle.setAttribute("aria-expanded", String(isOpen));
     skillsToggle.textContent = isOpen ? "收起花卷的一天" : "展开花卷的一天";
+  });
+}
+
+// 趣味功能：点击“重新抽签”，随机换一条今日提示。
+if (fortuneButton && fortuneText && fortuneMeta) {
+  fortuneButton.addEventListener("click", () => {
+    let nextIndex = Math.floor(Math.random() * fortunes.length);
+
+    if (fortunes.length > 1) {
+      while (nextIndex === currentFortuneIndex) {
+        nextIndex = Math.floor(Math.random() * fortunes.length);
+      }
+    }
+
+    currentFortuneIndex = nextIndex;
+    fortuneText.textContent = fortunes[nextIndex].text;
+    fortuneMeta.textContent = fortunes[nextIndex].meta;
+
+    if (fortuneCard) {
+      fortuneCard.classList.remove("is-popping");
+      void fortuneCard.offsetWidth;
+      fortuneCard.classList.add("is-popping");
+    }
   });
 }
 

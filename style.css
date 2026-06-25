@@ -322,6 +322,104 @@ h3 {
   font-size: 0.92rem;
 }
 
+/* 今日花卷签：这是一个独立的小功能区，用更醒目的背景和卡片突出互动感。 */
+.fortune-section {
+  padding-top: 42px;
+}
+
+.fortune-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.85fr) minmax(300px, 1.15fr);
+  gap: 28px;
+  align-items: stretch;
+  overflow: hidden;
+  padding: 28px;
+  border: 1px solid rgba(229, 107, 79, 0.28);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(229, 107, 79, 0.13), transparent 38%),
+    linear-gradient(315deg, rgba(244, 189, 79, 0.18), transparent 36%),
+    var(--surface-color);
+  box-shadow: var(--shadow);
+}
+
+.fortune-card::before {
+  content: "";
+  position: absolute;
+  inset: -40% auto auto -10%;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(244, 189, 79, 0.28);
+  pointer-events: none;
+}
+
+.fortune-card.is-popping {
+  animation: fortune-pop 0.45s ease;
+}
+
+.fortune-intro {
+  max-width: 520px;
+  margin: 12px 0 0;
+  color: var(--muted-color);
+}
+
+.fortune-panel {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  min-height: 240px;
+  padding: 24px;
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(12px);
+}
+
+[data-theme="dark"] .fortune-panel {
+  background: rgba(23, 35, 33, 0.78);
+}
+
+.fortune-label {
+  margin: 0;
+  color: var(--accent-color);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.fortune-text {
+  margin: 0;
+  color: var(--ink-color);
+  font-size: clamp(1.35rem, 3vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.fortune-meta {
+  margin: 0;
+  color: var(--muted-color);
+}
+
+.fortune-button {
+  width: fit-content;
+  margin-top: auto;
+}
+
+@keyframes fortune-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.015);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 .section-heading {
   display: grid;
   grid-template-columns: 0.72fr 1fr;
@@ -588,6 +686,7 @@ h3 {
 /* 860px 以下通常是平板或手机，复杂网格改成单列更好读。 */
 @media (max-width: 860px) {
   .intro-content,
+  .fortune-card,
   .section-heading,
   .skill-grid,
   .routine,
@@ -607,6 +706,10 @@ h3 {
 
   .quick-facts {
     grid-template-columns: 1fr;
+  }
+
+  .fortune-panel {
+    min-height: 220px;
   }
 }
 
