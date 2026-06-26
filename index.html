@@ -3,57 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="花卷的自我介绍网页，包含简介、技能、项目、联系方式和基础交互。">
+  <meta name="description" content="花卷的互动主页，包含简介、今日签、技能、作品和联系方式。">
+  <meta name="theme-color" content="#f5f8f6">
   <title>花卷的互动主页</title>
-  <!-- style.css 负责页面外观；HTML 只负责页面内容和结构。 -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- header 是页面顶部导航；href="#xxx" 会跳到对应 id 的区块。 -->
+  <a class="skip-link" href="#mainContent">跳到主要内容</a>
+  <div class="reading-progress" aria-hidden="true">
+    <span id="readingProgress"></span>
+  </div>
+
   <header class="site-header">
     <nav class="site-nav" aria-label="主导航">
-      <a class="brand" href="#intro">花卷</a>
+      <a class="brand" href="#intro" data-route-link>花卷</a>
       <div class="nav-actions">
         <ul class="nav-list">
-          <li><a href="#intro">简介</a></li>
-          <li><a href="#fortune">今日签</a></li>
-          <li><a href="#skills">技能</a></li>
-          <li><a href="#projects">作品 / 项目</a></li>
-          <li><a href="#contact">联系方式</a></li>
+          <li><a href="#intro" data-route-link>简介</a></li>
+          <li><a href="#fortune" data-route-link>今日签</a></li>
+          <li><a href="#skills" data-route-link>技能</a></li>
+          <li><a href="#projects" data-route-link>作品</a></li>
+          <li><a href="#contact" data-route-link>联系</a></li>
         </ul>
         <button class="icon-button" type="button" id="themeToggle" aria-label="切换深色主题" aria-pressed="false">明暗</button>
       </div>
     </nav>
   </header>
 
-  <main>
-    <!-- intro 是首屏简介，通常负责告诉访客“这是谁”和“可以做什么”。 -->
-    <section id="intro" aria-labelledby="intro-title">
-      <div class="intro-content">
-        <img class="avatar" src="微信图片_20260624111924_2_2.jpg" alt="花卷的头像">
-        <div>
+  <main id="mainContent" tabindex="-1">
+    <section class="view hero-view" id="intro" aria-labelledby="intro-title" data-view>
+      <div class="intro-content reveal">
+        <div class="avatar-shell">
+          <img class="avatar" id="introImage" src="assets/huajuan-hero.jpg" alt="花卷的头像" width="900" height="675" fetchpriority="high" tabindex="0" aria-label="双击放大花卷的完整头像">
+          <div class="avatar-badge" aria-hidden="true">24h 可爱营业</div>
+        </div>
+        <div class="hero-copy">
           <p class="eyebrow">可爱生活观察员</p>
-          <h1 id="intro-title">你好，我是花卷，一只认真把日子过软的猫</h1>
+          <h1 id="intro-title" data-typewriter="你好，我是花卷，一只认真把日子过软的猫">你好，我是花卷，一只认真把日子过软的猫</h1>
           <p class="lead">
             我是一只很可爱的猫。平时喜欢安静地观察世界，也会认真生活，
             把每一天过得柔软、自在又有一点点调皮。
           </p>
           <div class="hero-actions" aria-label="页面快捷入口">
-            <a class="button primary" href="#projects">看作品</a>
-            <a class="button secondary" href="#contact">联系花卷</a>
+            <a class="button primary" href="#projects" data-route-link>看作品</a>
+            <a class="button secondary" href="#contact" data-route-link>联系花卷</a>
           </div>
           <div class="quick-facts" aria-label="花卷速览">
             <div class="fact"><strong>3</strong><span>项拿手技能</span></div>
             <div class="fact"><strong>2</strong><span>个代表作品</span></div>
-            <div class="fact"><strong>24h</strong><span>持续可爱营业</span></div>
+            <div class="fact"><strong>12</strong><span>条今日签文</span></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- fortune 是新加的趣味功能：点击按钮，会由 script.js 随机生成一条今日花卷签。 -->
-    <section class="fortune-section" id="fortune" aria-labelledby="fortune-title">
-      <div class="fortune-card" id="fortuneCard">
+    <section class="view fortune-section" id="fortune" aria-labelledby="fortune-title" data-view hidden>
+      <div class="fortune-card reveal" id="fortuneCard">
         <div>
           <p class="eyebrow">今日花卷签</p>
           <h2 id="fortune-title">抽一张今天的柔软提示</h2>
@@ -64,30 +70,33 @@
           <p class="fortune-label">今日签文</p>
           <p class="fortune-text" id="fortuneText">今天适合把重要的事放慢一点，把喜欢的事靠近一点。</p>
           <p class="fortune-meta" id="fortuneMeta">幸运动作：找一个舒服的位置</p>
-          <button class="button primary fortune-button" type="button" id="fortuneButton">重新抽签</button>
+          <div class="fortune-actions">
+            <button class="button primary fortune-button" type="button" id="fortuneButton">重新抽签</button>
+            <button class="button secondary fortune-copy" type="button" id="fortuneCopy">复制这句</button>
+          </div>
+          <p class="copy-status" id="copyStatus" role="status" aria-live="polite"></p>
         </div>
       </div>
     </section>
 
-    <!-- skills 展示核心能力；下面的“花卷的一天”由 script.js 控制展开/收起。 -->
-    <section id="skills" aria-labelledby="skills-title">
-      <div class="section-heading">
+    <section class="view" id="skills" aria-labelledby="skills-title" data-view hidden>
+      <div class="section-heading reveal">
         <h2 id="skills-title">技能</h2>
         <p>花卷的能力并不追求复杂，但讲究稳定、优雅和一点点出其不意。</p>
       </div>
       <div class="skill-list-wrap">
         <div class="skill-grid">
-          <article class="skill-card">
+          <article class="skill-card reveal">
             <span class="icon">食</span>
             <h3>吃饭</h3>
             <p>准时出现，认真享用每一餐，对食物保持真诚且坚定的热情。</p>
           </article>
-          <article class="skill-card">
+          <article class="skill-card reveal">
             <span class="icon">眠</span>
             <h3>睡觉</h3>
             <p>擅长寻找舒服的位置，进入高质量休息，醒来后精神饱满。</p>
           </article>
-          <article class="skill-card">
+          <article class="skill-card reveal">
             <span class="icon">动</span>
             <h3>打豆豆</h3>
             <p>动作灵活，出手果断，面对目标时具有优秀的专注力。</p>
@@ -119,15 +128,14 @@
       </div>
     </section>
 
-    <!-- projects 是作品卡片区；每个 article 表示一个独立项目。 -->
-    <section id="projects" aria-labelledby="projects-title">
-      <div class="section-heading">
+    <section class="view" id="projects" aria-labelledby="projects-title" data-view hidden>
+      <div class="section-heading reveal">
         <h2 id="projects-title">作品 / 项目</h2>
         <p>这些项目记录了花卷的审美方向：柔软、圆润、带一点名字本身的幽默感。</p>
       </div>
 
       <div class="project-grid">
-        <article class="project-card">
+        <article class="project-card reveal">
           <h3>一朵花</h3>
           <p>花卷的第一个作品，是一朵安静又可爱的花，适合放在窗边和午后的光里。</p>
           <ul class="tag-list" aria-label="一朵花标签">
@@ -138,7 +146,7 @@
           <a href="https://poem-123.github.io/huajuan-homepage/#projects" target="_blank" rel="noopener" aria-label="查看一朵花">查看项目</a>
         </article>
 
-        <article class="project-card">
+        <article class="project-card reveal">
           <h3>一个卷</h3>
           <p>花卷的第二个作品，是一个圆润、柔软、有名字感的卷，适合代表日常的小满足。</p>
           <ul class="tag-list" aria-label="一个卷标签">
@@ -151,9 +159,8 @@
       </div>
     </section>
 
-    <!-- contact 放联系入口；这里的链接会跳到邮箱、GitHub 或公开页面。 -->
-    <section id="contact" aria-labelledby="contact-title">
-      <div class="contact-wrap">
+    <section class="view" id="contact" aria-labelledby="contact-title" data-view hidden>
+      <div class="contact-wrap reveal">
         <div class="contact-panel">
           <h2 id="contact-title">联系方式</h2>
           <p>想邀请花卷看花、看卷，或者讨论一顿饭的严肃意义，可以从这里开始。</p>
@@ -170,14 +177,17 @@
     </section>
   </main>
 
-  <!-- 返回顶部按钮默认隐藏，滚动到一定距离后由 script.js 显示。 -->
   <button class="icon-button back-to-top" type="button" id="backToTop" aria-label="返回顶部">↑</button>
+
+  <div class="image-viewer" id="imageViewer" role="dialog" aria-modal="true" aria-label="花卷完整头像" hidden>
+    <button class="icon-button image-viewer-close" type="button" id="imageViewerClose" aria-label="关闭完整头像">×</button>
+    <img id="imageViewerImage" src="" alt="">
+  </div>
 
   <footer class="site-footer">
     <p>&copy; 2026 花卷。保留所有权利。</p>
   </footer>
 
-  <!-- script.js 负责明暗主题、展开/收起、返回顶部这三个交互。 -->
   <script src="script.js"></script>
 </body>
 </html>
