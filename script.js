@@ -19,12 +19,39 @@ const introImage = document.querySelector("#introImage");
 const imageViewer = document.querySelector("#imageViewer");
 const imageViewerImage = document.querySelector("#imageViewerImage");
 const imageViewerClose = document.querySelector("#imageViewerClose");
+const messageForm = document.querySelector("#messageForm");
+const messageInput = document.querySelector("#messageInput");
+const messageList = document.querySelector("#messageList");
+const emptyMessage = document.querySelector("#emptyMessage");
+const clearMessages = document.querySelector("#clearMessages");
+const projectGrid = document.querySelector("#projectGrid");
+const projectAddToggle = document.querySelector("#projectAddToggle");
+const projectComposer = document.querySelector("#projectComposer");
+const projectTitleInput = document.querySelector("#projectTitleInput");
+const projectDescriptionInput = document.querySelector("#projectDescriptionInput");
+const projectTagsInput = document.querySelector("#projectTagsInput");
+const projectAddStatus = document.querySelector("#projectAddStatus");
+const projectFactCount = document.querySelector("#projectFactCount");
+const lifePhotoGrid = document.querySelector("#lifePhotoGrid");
+const lifeAddToggle = document.querySelector("#lifeAddToggle");
+const lifeComposer = document.querySelector("#lifeComposer");
+const lifePhotoInput = document.querySelector("#lifePhotoInput");
+const lifeAddStatus = document.querySelector("#lifeAddStatus");
 
 const routeIds = ["intro", "fortune", "skills", "projects", "contact"];
 const views = Array.from(document.querySelectorAll("[data-view]"));
 const routeLinks = Array.from(document.querySelectorAll("[data-route-link]"));
-const navLinks = Array.from(document.querySelectorAll(".brand[data-route-link], .nav-list [data-route-link]"));
+const navLinks = Array.from(document.querySelectorAll(".brand[data-route-link], .nav-list [data-route-link], .quick-nav-link[data-route-link]"));
 const revealItems = Array.from(document.querySelectorAll(".reveal"));
+
+const introPhotos = [
+  { src: "assets/huajuan-photo-6.jpg", alt: "花卷生活照片 6" },
+  { src: "assets/huajuan-photo-1.jpg", alt: "花卷生活照片 1" },
+  { src: "assets/huajuan-photo-2.jpg", alt: "花卷生活照片 2" },
+  { src: "assets/huajuan-photo-3.jpg", alt: "花卷生活照片 3" },
+  { src: "assets/huajuan-photo-4.jpg", alt: "花卷生活照片 4" },
+  { src: "assets/huajuan-photo-5.jpg", alt: "花卷生活照片 5" }
+];
 
 const fortunes = [
   {
@@ -82,6 +109,12 @@ let activeRoute = "";
 let lastImageTrigger = null;
 let scrollTicking = false;
 let copyTimer = null;
+let savedMessages = [];
+let savedProjects = [];
+let savedLifePhotos = [];
+const messageStorageKey = "huajuan-messages";
+const projectStorageKey = "huajuan-projects";
+const lifePhotoStorageKey = "huajuan-life-photos";
 
 function setTheme(theme, shouldSave = true) {
   root.dataset.theme = theme;
@@ -214,17 +247,8 @@ function navigateToRoute(route, options = {}) {
     return;
   }
 
-  const update = () => syncView(route);
-
-  if (document.startViewTransition && !prefersReducedMotion.matches) {
-    const transition = document.startViewTransition(update);
-    transition.ready
-      .then(() => afterRouteChange({ focusMain, scrollTop, smooth }))
-      .catch(() => afterRouteChange({ focusMain, scrollTop, smooth }));
-  } else {
-    update();
-    afterRouteChange({ focusMain, scrollTop, smooth });
-  }
+  syncView(route);
+  afterRouteChange({ focusMain, scrollTop, smooth });
 }
 
 function setCopyStatus(message) {
@@ -282,6 +306,193 @@ function drawFortune() {
   setCopyStatus("");
 }
 
+function setPanelOpen(toggle, panel, isOpen) {
+  if (!toggle || !panel) {
+    return;
+  }
+
+  panel.hidden = !isOpen;
+  toggle.setAttribute("aria-expanded", String(isOpen));
+
+  if (isOpen) {
+    panel.classList.add("is-visible");
+  }
+}
+
+function setProjectAddStatus(message) {
+  if (!projectAddStatus) {
+    return;
+  }
+
+  projectAddStatus.textContent = message;
+}
+
+function setLifeAddStatus(message) {
+  if (!lifeAddStatus) {
+    return;
+  }
+
+  lifeAddStatus.textContent = message;
+}
+
+function readStoredList(key) {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function bindZoomableImage(image) {
+  if (!image || image.dataset.zoomBound === "true") {
+    return;
+  }
+
+  image.dataset.zoomBound = "true";
+  image.addEventListener("dblclick", () => openImageViewer(image));
+  image.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openImageViewer(image);
+    }
+  });
+}
+
+function setIntroPhoto(index) {
+  if (!introImage || introPhotos.length === 0) {
+    return;
+  }
+
+  const photo = introPhotos[index % introPhotos.length];
+  introImage.src = photo.src;
+  introImage.alt = photo.alt;
+  introImage.setAttribute("aria-label", `双击放大${photo.alt}`);
+  introImage.dataset.currentPhotoIndex = String(index % introPhotos.length);
+}
+
+function startIntroSlideshow() {
+  if (!introImage || introPhotos.length <= 1 || prefersReducedMotion.matches) {
+    return;
+  }
+
+  let currentIndex = Number(introImage.dataset.currentPhotoIndex || "0");
+
+  window.setInterval(() => {
+    currentIndex = (currentIndex + 1) % introPhotos.length;
+    setIntroPhoto(currentIndex);
+  }, 5000);
+}
+
+function createTagList(tags, label) {
+  const tagList = document.createElement("ul");
+  tagList.className = "tag-list";
+  tagList.setAttribute("aria-label", label);
+
+  tags.forEach((tag) => {
+    const item = document.createElement("li");
+    item.textContent = tag;
+    tagList.append(item);
+  });
+
+  return tagList;
+}
+
+function createProjectCard(project, index) {
+  const card = document.createElement("article");
+  card.className = "project-card reveal is-visible is-user-added";
+
+  const removeButton = document.createElement("button");
+  removeButton.className = "item-remove";
+  removeButton.type = "button";
+  removeButton.textContent = "×";
+  removeButton.setAttribute("aria-label", `移除项目 ${project.title}`);
+  removeButton.addEventListener("click", () => {
+    savedProjects.splice(index, 1);
+    storeProjects();
+    renderProjects();
+    setProjectAddStatus("已移除一个新增项目。");
+  });
+
+  const title = document.createElement("h3");
+  title.textContent = project.title;
+
+  const description = document.createElement("p");
+  description.textContent = project.description;
+
+  const tags = project.tags.length > 0 ? project.tags : ["新增", "花卷", "灵感"];
+  const tagList = createTagList(tags, `${project.title} 标签`);
+
+  card.append(removeButton, title, description, tagList);
+  return card;
+}
+
+function renderProjects() {
+  if (!projectGrid) {
+    return;
+  }
+
+  projectGrid.querySelectorAll(".is-user-added").forEach((card) => card.remove());
+  savedProjects.forEach((project, index) => {
+    projectGrid.append(createProjectCard(project, index));
+  });
+
+  if (projectFactCount) {
+    projectFactCount.textContent = String(2 + savedProjects.length);
+  }
+}
+
+function createLifePhotoItem(photo, index) {
+  const item = document.createElement("div");
+  item.className = "life-photo-item is-user-added";
+
+  const image = document.createElement("img");
+  image.className = "life-photo";
+  image.src = photo.src;
+  image.alt = photo.title || "花卷的萌萌照";
+  image.width = 900;
+  image.height = 900;
+  image.loading = "lazy";
+  image.tabIndex = 0;
+  image.dataset.zoomableImage = "";
+  image.setAttribute("aria-label", `双击放大${image.alt}`);
+  bindZoomableImage(image);
+
+  const removeButton = document.createElement("button");
+  removeButton.className = "item-remove";
+  removeButton.type = "button";
+  removeButton.textContent = "×";
+  removeButton.setAttribute("aria-label", `移除${image.alt}`);
+  removeButton.addEventListener("click", () => {
+    savedLifePhotos.splice(index, 1);
+    storeLifePhotos();
+    renderLifePhotos();
+    setLifeAddStatus("已移除一张新增切片。");
+  });
+
+  item.append(image, removeButton);
+  return item;
+}
+
+function renderLifePhotos() {
+  if (!lifePhotoGrid) {
+    return;
+  }
+
+  lifePhotoGrid.querySelectorAll(".is-user-added").forEach((item) => item.remove());
+  savedLifePhotos.forEach((photo, index) => {
+    lifePhotoGrid.append(createLifePhotoItem(photo, index));
+  });
+}
+
+function storeProjects() {
+  localStorage.setItem(projectStorageKey, JSON.stringify(savedProjects));
+}
+
+function storeLifePhotos() {
+  localStorage.setItem(lifePhotoStorageKey, JSON.stringify(savedLifePhotos));
+}
+
 function runTypewriter() {
   const title = document.querySelector("[data-typewriter]");
 
@@ -300,7 +511,7 @@ function runTypewriter() {
     title.textContent = fullText.slice(0, index);
 
     if (index < fullText.length) {
-      window.setTimeout(tick, 56);
+      window.setTimeout(tick, 118);
     } else {
       window.setTimeout(() => title.classList.remove("is-typing"), 700);
     }
@@ -341,12 +552,128 @@ function closeImageViewer() {
   }
 }
 
+function readSavedMessages() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(messageStorageKey) || "[]");
+    return Array.isArray(parsed) ? parsed.filter((item) => item && typeof item.text === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+function storeMessages() {
+  localStorage.setItem(messageStorageKey, JSON.stringify(savedMessages));
+}
+
+function renderMessages() {
+  if (!messageList || !emptyMessage) {
+    return;
+  }
+
+  messageList.innerHTML = "";
+  emptyMessage.hidden = savedMessages.length > 0;
+
+  savedMessages.forEach((item) => {
+    const messageItem = document.createElement("li");
+    const messageText = document.createElement("span");
+    const messageTime = document.createElement("time");
+    const date = new Date(item.createdAt || Date.now());
+
+    messageText.textContent = item.text;
+    messageTime.dateTime = date.toISOString();
+    messageTime.textContent = date.toLocaleString("zh-CN", {
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    });
+
+    messageItem.append(messageText, messageTime);
+    messageList.append(messageItem);
+  });
+}
+
+function addMessage(text) {
+  savedMessages.unshift({
+    text,
+    createdAt: new Date().toISOString()
+  });
+  savedMessages = savedMessages.slice(0, 6);
+  storeMessages();
+  renderMessages();
+}
+
+function tagsFromText(text) {
+  return text
+    .split(/[,，]/)
+    .map((tag) => tag.trim())
+    .filter(Boolean)
+    .slice(0, 4);
+}
+
+function imageFileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.addEventListener("load", () => {
+      const image = new Image();
+
+      image.addEventListener("load", () => {
+        const maxSize = 900;
+        const scale = Math.min(maxSize / image.naturalWidth, maxSize / image.naturalHeight, 1);
+        const width = Math.round(image.naturalWidth * scale);
+        const height = Math.round(image.naturalHeight * scale);
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        canvas.width = width;
+        canvas.height = height;
+
+        if (!context) {
+          reject(new Error("canvas unavailable"));
+          return;
+        }
+
+        context.drawImage(image, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", 0.82));
+      });
+
+      image.addEventListener("error", () => reject(new Error("image unavailable")));
+      image.src = reader.result;
+    });
+
+    reader.addEventListener("error", () => reject(new Error("file unavailable")));
+    reader.readAsDataURL(file);
+  });
+}
+
 const savedTheme = localStorage.getItem("huajuan-theme");
 if (savedTheme === "dark") {
   setTheme("dark", false);
 } else {
   setTheme("light", false);
 }
+
+savedProjects = readStoredList(projectStorageKey)
+  .filter((item) => item && typeof item.title === "string" && typeof item.description === "string")
+  .map((item) => ({
+    title: item.title,
+    description: item.description,
+    tags: Array.isArray(item.tags) ? item.tags.filter((tag) => typeof tag === "string").slice(0, 4) : []
+  }))
+  .slice(0, 6);
+
+savedLifePhotos = readStoredList(lifePhotoStorageKey)
+  .filter((item) => item && typeof item.title === "string" && typeof item.src === "string")
+  .slice(0, 9);
+
+renderProjects();
+renderLifePhotos();
+
+document.querySelectorAll("[data-zoomable-image], #introImage").forEach(bindZoomableImage);
+startIntroSlideshow();
 
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
@@ -377,13 +704,103 @@ if (fortuneCopy && fortuneText && fortuneMeta) {
   });
 }
 
-if (introImage) {
-  introImage.addEventListener("dblclick", () => openImageViewer(introImage));
-  introImage.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      openImageViewer(introImage);
+if (projectAddToggle && projectComposer) {
+  projectAddToggle.addEventListener("click", () => {
+    const willOpen = projectComposer.hidden;
+    setPanelOpen(projectAddToggle, projectComposer, willOpen);
+
+    if (willOpen && projectTitleInput) {
+      projectTitleInput.focus();
     }
+  });
+}
+
+if (projectComposer && projectTitleInput && projectDescriptionInput) {
+  projectComposer.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const title = projectTitleInput.value.trim();
+    const description = projectDescriptionInput.value.trim();
+    const tags = tagsFromText(projectTagsInput?.value || "");
+
+    if (!title || !description) {
+      setProjectAddStatus("项目名称和描述都要填写。");
+      return;
+    }
+
+    savedProjects.unshift({ title, description, tags });
+    savedProjects = savedProjects.slice(0, 6);
+    storeProjects();
+    renderProjects();
+    projectComposer.reset();
+    setProjectAddStatus("已添加一个新项目。");
+  });
+}
+
+if (lifeAddToggle && lifeComposer) {
+  lifeAddToggle.addEventListener("click", () => {
+    const willOpen = lifeComposer.hidden;
+    setPanelOpen(lifeAddToggle, lifeComposer, willOpen);
+
+    if (willOpen && lifePhotoInput) {
+      lifePhotoInput.focus();
+    }
+  });
+}
+
+if (lifeComposer && lifePhotoInput) {
+  lifeComposer.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const files = Array.from(lifePhotoInput.files || []);
+
+    if (files.length === 0) {
+      setLifeAddStatus("需要先选择照片。");
+      return;
+    }
+
+    try {
+      setLifeAddStatus("正在保存照片。");
+      const photos = await Promise.all(files.slice(0, 6).map(async (file, index) => ({
+        title: `花卷的萌萌照 ${savedLifePhotos.length + index + 1}`,
+        src: await imageFileToDataUrl(file)
+      })));
+
+      savedLifePhotos = photos.concat(savedLifePhotos);
+      savedLifePhotos = savedLifePhotos.slice(0, 6);
+      storeLifePhotos();
+      renderLifePhotos();
+      lifeComposer.reset();
+      setLifeAddStatus(`已添加 ${photos.length} 张花卷的萌萌照。`);
+    } catch {
+      setLifeAddStatus("这张照片暂时保存失败，换一张试试。");
+    }
+  });
+}
+
+if (messageForm && messageInput) {
+  savedMessages = readSavedMessages();
+  renderMessages();
+
+  messageForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const text = messageInput.value.trim();
+
+    if (!text) {
+      return;
+    }
+
+    addMessage(text);
+    messageInput.value = "";
+    messageInput.focus();
+  });
+}
+
+if (clearMessages) {
+  clearMessages.addEventListener("click", () => {
+    savedMessages = [];
+    storeMessages();
+    renderMessages();
   });
 }
 

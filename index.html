@@ -21,11 +21,11 @@
       <div class="nav-actions">
         <ul class="nav-list">
           <li><a href="#intro" data-route-link>简介</a></li>
-          <li><a href="#fortune" data-route-link>今日签</a></li>
           <li><a href="#skills" data-route-link>技能</a></li>
           <li><a href="#projects" data-route-link>作品</a></li>
           <li><a href="#contact" data-route-link>联系</a></li>
         </ul>
+        <a class="quick-nav-link" href="#fortune" data-route-link>今日签</a>
         <button class="icon-button" type="button" id="themeToggle" aria-label="切换深色主题" aria-pressed="false">明暗</button>
       </div>
     </nav>
@@ -35,7 +35,7 @@
     <section class="view hero-view" id="intro" aria-labelledby="intro-title" data-view>
       <div class="intro-content reveal">
         <div class="avatar-shell">
-          <img class="avatar" id="introImage" src="assets/huajuan-hero.jpg" alt="花卷的头像" width="900" height="675" fetchpriority="high" tabindex="0" aria-label="双击放大花卷的完整头像">
+          <img class="avatar" id="introImage" src="assets/huajuan-photo-6.jpg" alt="花卷生活照片 6" width="1707" height="1280" fetchpriority="high" tabindex="0" aria-label="双击放大当前花卷生活照">
           <div class="avatar-badge" aria-hidden="true">24h 可爱营业</div>
         </div>
         <div class="hero-copy">
@@ -50,9 +50,9 @@
             <a class="button secondary" href="#contact" data-route-link>联系花卷</a>
           </div>
           <div class="quick-facts" aria-label="花卷速览">
-            <div class="fact"><strong>3</strong><span>项拿手技能</span></div>
-            <div class="fact"><strong>2</strong><span>个代表作品</span></div>
-            <div class="fact"><strong>12</strong><span>条今日签文</span></div>
+            <a class="fact" href="#skills" data-route-link aria-label="查看 3 项拿手技能"><strong>3</strong><span>项拿手技能</span></a>
+            <a class="fact" href="#projects" data-route-link aria-label="查看代表作品"><strong id="projectFactCount">2</strong><span>个代表作品</span></a>
+            <a class="fact" href="#fortune" data-route-link aria-label="查看 12 条今日签文"><strong>12</strong><span>条今日签文</span></a>
           </div>
         </div>
       </div>
@@ -134,7 +134,7 @@
         <p>这些项目记录了花卷的审美方向：柔软、圆润、带一点名字本身的幽默感。</p>
       </div>
 
-      <div class="project-grid">
+      <div class="project-grid" id="projectGrid">
         <article class="project-card reveal">
           <h3>一朵花</h3>
           <p>花卷的第一个作品，是一朵安静又可爱的花，适合放在窗边和午后的光里。</p>
@@ -143,7 +143,6 @@
             <li>明亮</li>
             <li>可收藏</li>
           </ul>
-          <a href="https://poem-123.github.io/huajuan-homepage/#projects" target="_blank" rel="noopener" aria-label="查看一朵花">查看项目</a>
         </article>
 
         <article class="project-card reveal">
@@ -154,9 +153,64 @@
             <li>松弛</li>
             <li>有名字感</li>
           </ul>
-          <a href="https://github.com/Poem-123/huajuan-homepage" target="_blank" rel="noopener" aria-label="查看一个卷">查看项目</a>
         </article>
       </div>
+
+      <div class="section-actions project-add-actions reveal" aria-label="项目操作">
+        <button class="button secondary" type="button" id="projectAddToggle" aria-controls="projectComposer" aria-expanded="false">添加项目</button>
+      </div>
+
+      <form class="add-panel reveal" id="projectComposer" hidden>
+        <div class="add-grid">
+          <label>
+            项目名称
+            <input id="projectTitleInput" name="title" type="text" maxlength="28" placeholder="例如：一颗星" required>
+          </label>
+          <label>
+            标签
+            <input id="projectTagsInput" name="tags" type="text" maxlength="40" placeholder="用逗号分隔，例如：柔软, 明亮">
+          </label>
+          <label class="wide-field">
+            项目描述
+            <textarea id="projectDescriptionInput" name="description" maxlength="110" placeholder="写一句这个项目的特点" required></textarea>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button class="button primary" type="submit">保存项目</button>
+          <p class="form-status" id="projectAddStatus" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <section class="life-gallery reveal" aria-labelledby="life-gallery-title">
+        <div class="life-gallery-copy">
+          <p class="eyebrow">生活照片合集</p>
+          <h3 id="life-gallery-title">花卷的日常切片</h3>
+          <p>把吃饭、发呆、观察和休息收进一组轻轻的照片里。双击任意照片，可以看完整大图。</p>
+        </div>
+        <div class="life-photo-grid" id="lifePhotoGrid" aria-label="花卷生活照片">
+          <img class="life-photo" src="assets/huajuan-photo-1.jpg" alt="花卷生活照片 1" width="960" height="1280" loading="lazy" tabindex="0" data-zoomable-image aria-label="双击放大花卷生活照片 1">
+          <img class="life-photo" src="assets/huajuan-photo-2.jpg" alt="花卷生活照片 2" width="960" height="1282" loading="lazy" tabindex="0" data-zoomable-image aria-label="双击放大花卷生活照片 2">
+          <img class="life-photo" src="assets/huajuan-photo-3.jpg" alt="花卷生活照片 3" width="960" height="1280" loading="lazy" tabindex="0" data-zoomable-image aria-label="双击放大花卷生活照片 3">
+          <img class="life-photo" src="assets/huajuan-photo-4.jpg" alt="花卷生活照片 4" width="1279" height="1706" loading="lazy" tabindex="0" data-zoomable-image aria-label="双击放大花卷生活照片 4">
+          <img class="life-photo" src="assets/huajuan-photo-5.jpg" alt="花卷生活照片 5" width="1279" height="1810" loading="lazy" tabindex="0" data-zoomable-image aria-label="双击放大花卷生活照片 5">
+          <img class="life-photo" src="assets/huajuan-photo-6.jpg" alt="花卷生活照片 6" width="1707" height="1280" loading="lazy" tabindex="0" data-zoomable-image aria-label="双击放大花卷生活照片 6">
+        </div>
+        <div class="section-actions life-gallery-actions" aria-label="生活照片操作">
+          <button class="button secondary" type="button" id="lifeAddToggle" aria-controls="lifeComposer" aria-expanded="false">添加花卷的萌萌照</button>
+        </div>
+        <form class="add-panel life-add-panel" id="lifeComposer" hidden>
+          <div class="add-grid">
+            <label class="wide-field">
+              选择照片
+              <input id="lifePhotoInput" name="photo" type="file" accept="image/*" multiple required>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="button primary" type="submit">保存萌萌照</button>
+            <p class="form-status" id="lifeAddStatus" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </section>
     </section>
 
     <section class="view" id="contact" aria-labelledby="contact-title" data-view hidden>
@@ -166,14 +220,36 @@
           <p>想邀请花卷看花、看卷，或者讨论一顿饭的严肃意义，可以从这里开始。</p>
           <ul class="contact-list">
             <li><a href="mailto:hello@huajuan.com"><span>邮箱</span><strong>hello@huajuan.com</strong></a></li>
-            <li><a href="https://github.com/Poem-123/huajuan-homepage" target="_blank" rel="noopener"><span>GitHub</span><strong>Poem-123/huajuan-homepage</strong></a></li>
-            <li><a href="https://poem-123.github.io/huajuan-homepage/" target="_blank" rel="noopener"><span>公开页面</span><strong>poem-123.github.io</strong></a></li>
+            <li><a href="mailto:GitHub@huajuan.com"><span>GitHub</span><strong>GitHub@huajuan.com</strong></a></li>
+            <li><a href="https://huajuan1w9.com" target="_blank" rel="noopener"><span>公开页面</span><strong>huajuan1w9.com</strong></a></li>
           </ul>
         </div>
         <div class="contact-note">
           <p>保持好奇，保持柔软，也记得准时吃饭。花卷会在舒服的位置等你。</p>
         </div>
       </div>
+
+      <section class="message-panel reveal" aria-labelledby="message-title">
+        <div class="section-heading compact">
+          <h2 id="message-title">给花卷留言</h2>
+          <p>写一句想对花卷说的话，页面会把它保存在当前浏览器里。</p>
+        </div>
+        <form class="message-form" id="messageForm">
+          <label for="messageInput">留言内容</label>
+          <div class="message-row">
+            <input id="messageInput" name="message" type="text" maxlength="80" placeholder="例如：今天也要准时吃饭" autocomplete="off" required>
+            <button class="button primary" type="submit">提交</button>
+          </div>
+        </form>
+        <div class="message-list-wrap">
+          <div class="message-list-header">
+            <h3>已保存留言</h3>
+            <button class="button secondary compact-button" type="button" id="clearMessages">清空</button>
+          </div>
+          <ul class="message-list" id="messageList" aria-live="polite"></ul>
+          <p class="empty-message" id="emptyMessage">还没有留言。</p>
+        </div>
+      </section>
     </section>
   </main>
 
